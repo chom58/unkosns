@@ -12,18 +12,24 @@ export const useAuth = () => {
   useEffect(() => {
     const initAuth = async () => {
       try {
+        console.log('認証開始...')
         // Supabaseクライアントの作成を試みる
         const supabase = createClient()
+        console.log('Supabaseクライアント作成成功')
         
         // 現在のユーザーを確認
         let currentUser = await getCurrentUser()
+        console.log('現在のユーザー:', currentUser)
         
         // ユーザーがいない場合は匿名でサインイン
         if (!currentUser) {
+          console.log('匿名サインイン開始...')
           currentUser = await signInAnonymously()
+          console.log('匿名サインイン完了:', currentUser)
         }
         
         setUser(currentUser)
+        setLoading(false)
 
         // 認証状態の変更を監視
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
