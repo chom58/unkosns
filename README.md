@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# うんこSNS
 
-## Getting Started
+くだらないことをつぶやいても許されるSNS - リアルタイム同期対応版
 
-First, run the development server:
+## 🚀 主な機能
 
+- 💩 140文字以内の「くだらない」投稿
+- 🚽 ランダムタイムライン（トイレ）
+- 💩 リアクション機能
+- 🌊 「流す」でタイムラインをシャッフル
+- 24時間で投稿が自動消滅
+- **リアルタイム同期（全ユーザーが同じタイムラインを共有）**
+- 匿名投稿（ログイン不要）
+
+## 開発環境のセットアップ
+
+### 1. 依存関係のインストール
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Supabaseプロジェクトの作成
+1. [Supabase](https://supabase.com)でアカウントを作成
+2. 新しいプロジェクトを作成
+3. プロジェクトのURLとanon keyを取得
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. 環境変数の設定
+`.env.local`ファイルを編集して、Supabaseの認証情報を追加：
+```
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. データベースのセットアップ
+Supabaseのダッシュボードで `supabase/setup.sql` の内容を実行してください。
 
-## Learn More
+主な設定内容：
+- 投稿（posts）テーブル
+- リアクション（reactions）テーブル
+- RLSポリシー（セキュリティ設定）
+- リアルタイム同期の有効化
+- 自動リアクション数更新トリガー
 
-To learn more about Next.js, take a look at the following resources:
+### 5. 認証設定
+Supabaseダッシュボードで：
+1. Authentication → Settings
+2. 「Enable anonymous sign-ins」をONにする
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 6. 開発サーバーの起動
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+http://localhost:3000 でアプリケーションが起動します。
 
-## Deploy on Vercel
+## 技術スタック
+- **フロントエンド**: Next.js 15, TypeScript, Tailwind CSS
+- **バックエンド**: Supabase (PostgreSQL + リアルタイム)
+- **認証**: Supabase Auth (匿名認証)
+- **ホスティング**: Vercel（推奨）
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 今後の実装予定
+- [ ] 24時間自動削除のサーバーサイド実装（Supabase Edge Functions）
+- [ ] うんこプレミアム（有料プラン）
+- [ ] PWA対応
+- [ ] ダークモード
